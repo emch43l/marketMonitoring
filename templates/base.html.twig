@@ -1,12 +1,30 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'/>
+    {% block stylesheets %}
+    <link rel="stylesheet" href="src/css/style.css"/>
+    {% endblock %}
+</head>
+<body>
+    <div class="alert-holder"> 
+        <div id="alert">
+            <div class="alert-icon">
+                <i class="" id="icon" aria-hidden="true"></i>
+            </div>
+            <div class='alert-text'></div>
+        </div>
+    </div>
+    {% block body %}
+    
+    {% endblock %}
+    <script src="src/jquery.min.js"></script>
+    <script src="src/js/alert.js"></script>
+    {% block javascripts %}
+    
+    {% endblock %}
+</body>
 </html>

@@ -1,3 +1,7 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+    path: /
+    controller: App\Controller\LoginController::login
+
+panel:
+    path: /panel
+    controller: App\Controller\PanelController::panel

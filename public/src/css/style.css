@@ -1,0 +1,677 @@
+/* main variables */
+
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+
+:root
+{
+    --main-yellow: #e7c944;
+    --yellow-1: #b39c36;
+    --main-dark: #1d1d1d;
+    --dark-2: #202020;
+    --box-border-dark: #0c0c0c;
+    --white-text: #cecece;
+    --dark-text: #3d3d3d;
+    --light-dar-text: #535353;
+    --dark-dark: #151515;
+    --dark-3: #242424;
+    --main-red: #b12f2f;
+    --dark-red: #7a2b2b;
+    --main-green: #307c29;
+    --dark-green: #245c1f;
+    --main-orange: #c08334;
+    --dark-orange: #8a692d;
+    --light-dark-text: #494949;
+}
+
+body
+{
+    margin: 0;
+    padding: 0;
+    background-color: var(--main-dark);
+    height: 100vh;
+    width: 100vw;
+}
+
+/* alert section */
+
+.alert-holder
+{
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    height: 0;
+}
+
+#alert
+{
+    margin: 0 auto;
+    width: 500px;
+    height: 60px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.062);
+    bottom: -80px;
+    position: relative;
+    background-color: var(--dark-3);
+    border-right: 2px solid var(--main-dark);
+}
+
+
+.alert-holder
+{
+    z-index: 10;
+}
+
+.alert-icon
+{
+    float: left;
+    width: 60px;
+    height: 100%;
+}
+
+/* alert types */
+
+.error
+{
+    background-color: var(--main-red);
+    border-right: 10px solid var(--dark-red);
+}
+
+.border-red
+{
+    border-color: var(--main-red) !important;
+}
+
+.success
+{
+    background-color: var(--main-green);
+    border-right: 10px solid var(--dark-green);
+}
+
+.border-green
+{
+    border-color: var(--main-green) !important;
+}
+
+.alert
+{
+    background-color: var(--main-orange);
+    border-right: 10px solid var(--dark-orange);
+}
+
+.border-orange
+{
+    border-color: var(--main-orange) !important;
+}
+
+.alert-icon > i
+{
+    font-size: 50px;
+    text-align: center;
+    width: 100%;
+    line-height: 1.15;
+    color: var(--main-dark);
+}
+
+.alert-text
+{
+    float: right;
+    width: calc(100% - 110px);
+    font-family: 'Russo One', 'sans-serif';
+    font-size: 15px;
+    padding: 0px 20px 0px 20px;
+    line-height: 4;
+    height: 100%;
+    color: var(--white-text);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+
+
+/* login section */
+
+.login-form-holder
+{
+    display: flex;
+}
+
+.logo
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.login-form
+{
+    box-sizing: border-box;
+    font-size: 200%;
+    width: 600px;
+    height: 500px;
+    font-family:'Titillium Web', sans-serif;
+    position: relative;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.login-form > form >h1
+{
+    color: var(--white-text);
+    text-transform: uppercase;
+    font-size: 170%;
+    text-align: center;
+    margin: 0 0 5% 0;
+    font-family: 'Russo One', sans-serif;
+}
+
+form
+{
+    width: 100%;
+}
+
+#login-form > div > label
+{
+    color: var(--dark-text);
+    font-size: 25px;
+    font-weight: 400;
+    display:block;
+}
+
+#login-form > div
+{
+    margin-bottom: 3%;
+}
+
+.form-control, .main-input > div > input
+{
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    height: 30px;
+    border: none;
+    margin-bottom: 40px;
+    border-bottom: 2px solid var(--dark-text);
+    background-color: transparent;
+    font-family: 'Russo One', 'sans-serif';
+    color: var(--white-text);
+    font-size: 18px;
+    font-weight: 100;
+}
+
+#login-form > button
+{
+    cursor: pointer;
+    color: var(--dark-3);
+    border: none;
+    background-color: var(--main-yellow);
+    text-transform: uppercase;
+    font-size: 60%;
+    padding: 15px 25px;
+    font-family: 'Russo One', sans-serif;
+    display: block;
+    margin: 70px auto 0 auto;
+    font-weight: bold;
+}
+
+.logo
+{
+    font-family:'Russo One', sans-serif;
+    position: absolute;
+    color: var(--dark-text);
+    font-size: 100%;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.add-form > div > label
+{
+    display: block;
+}
+
+.main-input > div > label
+{
+    text-align: center;
+    color: var(--dark-text);
+    font-size: 17px;
+    font-weight: 400;
+    display: block;
+    margin-top: 10px;
+}
+
+#condition
+{
+    width: 400px;
+    max-width: 200px;
+    text-align: center;
+    font-family: 'Russo One';
+    height: 35px;
+    border: none;
+    background-color: var(--dark-3);
+    color: var(--white-text);
+    font-size: 17px;
+    text-shadow: 1px 0px 0px rgb(14, 14, 14);
+    border-radius: 5px;
+    display: block;
+    margin: 0 auto;
+}
+
+#condition > option
+{
+    font-family: 'Russo One', 'sans-serif';
+}
+
+
+.main-input
+{
+
+}
+
+.main-input > div
+{
+    margin: 50px auto;
+}
+
+.main-input > div > input
+{
+    display: block;
+    margin: 0 auto;
+    max-width: 400px;
+    text-align: center;
+    width: 75%;
+}
+
+.footer
+{
+    font-family:'Titillium Web', sans-serif;
+    position: absolute;
+    bottom: 5px;
+    margin: 5px 10px;
+    width: calc(100vw - 20px);
+    color: var(--light-dar-text);
+    font-weight: 300;
+}
+
+.footer > span:nth-child(1)
+{
+    float: left;
+}
+
+.footer > span:nth-child(2)
+{
+    float: right;
+}
+
+.version
+{
+    background-color: var(--dark-text);
+    border-radius: 2px;
+    font-weight: 700;
+    padding: 0px 5px;
+    margin-left: 10px;
+    color: var(--main-dark);
+}
+
+/* panel secion */
+
+.main
+{
+    height: 100vh;
+    width: 100vw;
+}
+
+.menu-holder
+{
+    float: left;
+    width: 300px;
+    height: 100%;
+}
+
+.main-section
+{
+    float: right;
+    width: calc(100% - 300px);
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.menu
+{
+    height: 100%;
+    position: relative;
+    border-right: 2px solid var(--dark-3);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    /* background-color: var(--dark-2); */
+    font-family: 'Russo One','sans-serif';
+}
+
+.menu-logo
+{
+    font-size: 30px;
+    text-align: center;
+    padding-top: 20px;
+    color: var(--dark-text);
+}
+
+.logout
+{
+    position: absolute;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    background-color: var(--main-red);
+    text-align: center;
+    border-top: 3px solid var(--dark-red);
+}
+
+.logout > a
+{
+    height: 100%;
+    width: 100%;
+    display: block;
+    color: var(--white-text);
+    text-decoration: none;
+    line-height: 2;
+    font-family: 'Russo One', 'sans-serif';
+    font-size: 25px;
+    box-sizing: border-box;
+}
+
+.add-form-holder
+{
+    height: 100vh;
+    width: 250px;
+    border-right: 3px solid var(--dark-3);
+    font-family: 'Titillium Web', sans-serif;
+    overflow: hidden;
+    position: fixed;
+    background-color: var(--dark-dark);
+    box-sizing: border-box;
+    display: none;
+}
+
+.table-holder
+{
+    height: 100vh;
+    overflow: auto;
+    position: relative;
+}
+
+.items-table
+{
+    width: 100%;
+    float: right;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 40px 20px 20px 20px;
+    box-sizing: border-box;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.item
+{
+    width: 250px;
+    background-color: var(--dark-3);
+    margin-top: 20px;
+    min-height: 300px;
+    border: 1px solid var(--dark-dark);
+    box-shadow: 0px 0px 20px var(--dark-dark);
+}
+
+.left-inputs
+{
+    width: 50%;
+    float: left;
+    box-sizing: border-box;
+    padding: 0 50px;
+    height: 100%;
+    height: calc(100% - 20px);
+}
+
+.right-inputs
+{
+    width: 50%;
+    float: right;
+    box-sizing: border-box;
+    padding: 0 50px;
+    height: calc(100% - 20px);
+}
+
+.form-header
+{
+    margin: 0;
+    text-align: center;
+    font-family: 'Russo One', 'sans-serif';
+    font-size: 30px;
+    margin-top: 50px;
+    color: var(--white-text);
+    text-transform: uppercase;
+}
+
+.optional-checkboxes > div > div > span
+{
+    color: var(--dark-text);
+    font-size: 20px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.optional-checkboxes > div > div > span > sup
+{
+    font-size: 10px;
+}
+
+.optional-checkboxes > div
+{
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.optional-checkboxes
+{
+    margin-top: 30px;
+}
+
+.submit-box > button
+{
+    margin: 0 5px;
+    display: inline-block;
+    font-family: 'Russo One', 'sans-serif';
+    background-color: var(--main-yellow);
+    border: none;
+    padding: 10px 15px;
+    color: var(--dark-3);
+    font-size: 18px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.submit-box 
+{
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.submit-box > button > i
+{
+    margin-right: 5px;
+}
+
+.submit-box > button > *
+{
+    vertical-align: middle;
+}
+
+.item-name
+{
+    font-family: 'Russo One', 'sans-serif';
+    color: var(--white-text);
+    text-align: left;
+    font-size: 16px;
+    padding: 10px 15px;
+    /* background-color: var(--main-dark); */
+    border-top: 1px solid var(--main-dark);
+
+}
+
+.item-img
+{
+    width: 80%;
+    display: block;
+    margin: 20px auto;
+    border-radius: 5px;
+    background-image: linear-gradient(to top right, transparent, var(--main-dark));
+}
+
+.item-price 
+{
+    font-family: 'Titillium Web', 'sans-serif';
+    font-size: 18px;
+    padding: 10px 10px;
+    color: var(--dark-text);
+}
+
+.item-price > span:nth-child(2)
+{
+    background-color: var(--main-dark);
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 15px;
+    color: var(--white-text);
+    float: right;
+    font-weight: bold;
+}
+
+.delete-item, .details-item
+{
+    background-color: var(--dark-dark);
+    border: none;
+    cursor: pointer;
+    padding: 5px 12px;
+    font-size: 17px;
+    border-radius: 2px;
+    float: right;
+    display: block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    color: var(--dark-text);
+}
+
+.details-item
+{
+    background-color: var(--main-yellow);
+    font-weight: 600;
+    color: var(--dark-dark);
+    font-size: 15px;
+    padding: 4px 12px;
+    font-family:'Titillium Web', sans-serif;
+}
+
+.delete-form
+{
+    position: relative;
+    margin: 20px 0 0 0;
+    display: block;
+}
+
+.close-form
+{
+    display: inline-block;
+    padding: 5px !important;
+    background-color: var(--main-dark) !important;
+    color: var(--main-red) !important;
+}
+
+.close-form > i
+{
+    text-align: center;
+    margin: 0 !important;
+    padding: 0 4px 2px 4px;
+    font-size: 15px;
+}
+
+.close-form > a > i
+{
+}
+
+.open-form
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+}
+
+.open-form > a
+{
+    display: block;
+    width: 100%;
+    color: var(--dark-3);
+    font-size: 16px;
+    background-image: radial-gradient(circle, var(--main-yellow),#e7c94463 ,transparent);
+    padding: 5px 15px;
+    text-align: center;
+    line-height: 1.5;
+    text-decoration: none;
+    font-family: 'Russo One','sans-serif';
+    border-bottom: 2px solid var(--dark-3);
+}
+
+
+/* switch section */
+
+.switch-cover
+{
+    width: 60px;
+    height: 30px;
+    display: block;
+    background-color: rgb(39, 39, 39);
+    position: relative;
+    border-radius: 1000px;
+    /* border: 2px solid #363636; */
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.137);
+    transition: all ease-in-out 0.3s;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+
+.switch-circle
+{
+    top: 2px;
+    bottom: 2px;
+    left: 2px;
+    right: calc(50% + 2px);
+    position: absolute;
+    background-color: var(--white-text);
+    /* border: 1px solid #fabf1f; */
+    /* box-shadow: inset 0px 0px 10px #2c7ae1; */
+    overflow: hidden;
+    border-radius: 1000px;
+    transition: all ease-out 0.2s;
+    box-shadow: 0px 0px 5px black;
+}
+
+.enabled
+{
+    background-color: var(--main-yellow) !important;
+}
+
+.checked
+{
+    left: calc(50% + 2px) !important;
+    right: 2px !important;
+}
+
+.switch-switchMe
+{
+    opacity: 0;
+}
