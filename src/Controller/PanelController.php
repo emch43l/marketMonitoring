@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PanelController extends AbstractController
 {
+
     /**
      * @IsGranted("ROLE_ADMIN")
      * @Route("/panel", name="panel")
@@ -31,7 +32,7 @@ class PanelController extends AbstractController
             (isset($message['message']) && is_array($message['message'])) ? $msg = $message['message'] : $msg[0] = '';
         }
 
-        return $this->render('panel/index.html.twig', ['data' => $api->getData(), 'error' => $type , 'message' => $msg[0]]);
+        return $this->render('panel/panel.html.twig', ['data' => $api->getData(), 'error' => $type , 'message' => $msg[0]]);
     }
 
     /**
@@ -64,6 +65,17 @@ class PanelController extends AbstractController
         $msg = $api->setName($id)->deleteData();
         return $this->redirectToRoute('panel', ['message' => $msg]);
     }
+
+    /**
+     * @Route("/panel/details/{name}", name="show_details", methods="GET")
+     */
+
+    public function getDetails(MarketApi $api, $name)
+    {
+        $msg = $api->setName($name)->getItemSaleHistory();
+        return $this->render('panel/details/details.html.twig',['data' => $msg]);
+    }
+
 
 
 }

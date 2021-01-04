@@ -608,6 +608,7 @@ form
     left: 0;
     right: 0;
     z-index: 5;
+    background-color: var(--main-dark);
 }
 
 .open-form > a

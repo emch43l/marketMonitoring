@@ -154,8 +154,12 @@ class MarketApi extends SteamApi
     public function getItemSaleHistory()
     {
         $options = [
-            'market_hash_name' => "AK-47 | The Empress (Field-Tested)",
+            'market_hash_name' => $this->name,
         ];
+
+        $history = $this->getSaleHistory(730,$options);
+
+        return $history;
     }
 
     /**
