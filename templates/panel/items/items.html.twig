@@ -1,0 +1,92 @@
+{% extends '/panel/panel.html.twig' %}
+
+{% block mainSection %}
+
+<div class="open-form">
+    <a href="#" id="open-form">
+        <span>ADD ITEM <i class="fa fa-plus" aria-hidden="true"></i></span>
+    </a>
+</div>
+<div class="table-holder">
+    <div class="add-form-holder" id="form-window">
+        <form action="panel/add" method="GET" class="add-form">
+            <h2 class="form-header">Add Item</h2>
+            <div class="main-input">
+                <div>
+                    <label for="name">Item Name (Required)</label>
+                    <input type="text" name="name" id="name">
+                </div>
+                <div>
+                    <label for="condition">Condition</label>
+                    <select name="condition" id="condition">
+                            <option selected="selected" value="0">Any</option>
+                            <option value="1">Factory New</option>
+                            <option value="2">Minimal Wear</option>
+                            <option value="3">Field Tested</option>
+                            <option value="4">Well Worn</option>
+                            <option value="5">Battle Scared</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="number">Result number (max 10)</label>
+                    <input type="number" name="count" id="number">
+                </div>
+            </div>
+            
+            <div class="optional-checkboxes">
+                <div>
+                    <div style="margin: 0 auto;">
+                        <span>Souvenir</span>
+                        <label for="switchMe" id="cover" class='switch-cover'>
+                            <div id="circle" class='checked switch-circle'></div>
+                            <input type="checkbox" name="souvenir" id="switchMe" class="switch-switchMe">
+                        </label>
+                    </div>
+                    
+                </div>
+                <div>
+                    <div style="margin: 0 auto;">
+                        <span>StatTrack<sup>TM</sup></span>
+                        <label for="switchMe1" id="cover" class='switch-cover'>
+                            <div id="circle" class='checked switch-circle'></div>
+                            <input type="checkbox" name="stattrack" id="switchMe1" class="switch-switchMe">
+                        </label>
+                    </div>
+                    
+                </div>
+                
+                <!-- <label for="switchMe" id="cover" class=''>
+                    <div id="circle" class='checked'></div>
+                    <input type="checkbox" name="stattrack" id="switchMe">
+                </label> -->
+            </div>
+            <div class="submit-box">
+                <button type="submit"><i class="fa fa-plus" aria-hidden="true"></i> <span>ADD</span> </button>
+                <button type="button" class="close-form" id="close-form"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </div>
+            
+        </form>
+    </div>
+    <div class="items-table">
+        {% for item in data %}
+            <div class="item">
+                <div><img src="{{ item.img }}" class="item-img"></div>
+                <div class="item-name">{{ item.name }}</div>
+                <div class="item-price"> <span>Price:</span> <span>{{ item.price }}</span></div>
+                <div>
+                    <form action="/panel/delete/{{ item.name }}" class="delete-form">
+                        <button class="delete-item" type="submit"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                    <form action="/details" class="delete-form">
+                        <input type="hidden" name="name" value="{{ item.name }}">
+                        <button class="details-item" type="submit">Details</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</div>
+
+{% endblock %}

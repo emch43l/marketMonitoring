@@ -10,6 +10,11 @@ use App\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Services\MarketApi;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Lock\Store\RedisStore;
+use Symfony\Component\Lock\Store\FlockStore;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
 class PanelController extends AbstractController
 {
@@ -32,7 +37,7 @@ class PanelController extends AbstractController
             (isset($message['message']) && is_array($message['message'])) ? $msg = $message['message'] : $msg[0] = '';
         }
 
-        return $this->render('panel/panel.html.twig', ['data' => $api->getData(), 'error' => $type , 'message' => $msg[0]]);
+        return $this->render('panel/items/items.html.twig', ['data' => $api->getData(), 'error' => $type , 'message' => $msg[0]]);
     }
 
     /**
@@ -67,13 +72,50 @@ class PanelController extends AbstractController
     }
 
     /**
-     * @Route("/panel/details/{name}", name="show_details", methods="GET")
+     * @Route("/details", name="show_details", methods="GET")
      */
 
-    public function getDetails(MarketApi $api, $name)
+    public function getDetails(MarketApi $api, Request $request)
     {
+
+        if(!$name = $request->query->get('name'))
+        {
+            $msg = ['type' => '', 'message' => []];
+            $msg['type'] = 'error';
+            $msg['message'][] .= 'Please specify item name';
+
+            return $this->redirectToRoute('panel', ['message' => $msg]);
+        }
         $msg = $api->setName($name)->getItemSaleHistory();
-        return $this->render('panel/details/details.html.twig',['data' => $msg]);
+        
+    }
+
+    /**
+     * @Route("/lock", name="lock_test")
+     */
+
+    public function checkLock()
+    {
+        // $redis = new \Redis();
+        // $redis->connect('192.168.136.129');
+        $store = new FlockStore();
+        $factory = new LockFactory($store);
+        $lock = $factory->createLock('second-lock');
+        $cmd = "php ".$this->getParameter('kernel.project_dir')."\bin\UpdatePricesCore.php";
+        if($lock->acquire())
+        {
+            $lock->release();
+            if (substr(php_uname(), 0, 7) == "Windows"){
+                pclose(popen("start /B ". $cmd, "r"));
+            } else {
+                exec($cmd . " > /dev/null &");  
+            } 
+            return $this->render('test/index.html.twig', ['count' => "ok"]);
+        }
+        else
+        {
+            return $this->render('test/index.html.twig', ['count' => 'sadasdasasddasd']);
+        }
     }
 
 
