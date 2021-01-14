@@ -91,33 +91,13 @@ class PanelController extends AbstractController
     }
 
     /**
-     * @Route("/lock", name="lock_test")
+     * @Route("/update/{name}/{price}", name="update", methods="GET")
      */
 
-    public function checkLock()
+    public function updatePrices(MarketApi $api, $name, $price)
     {
-        // $redis = new \Redis();
-        // $redis->connect('192.168.136.129');
-        $store = new FlockStore();
-        $factory = new LockFactory($store);
-        $lock = $factory->createLock('second-lock');
-        $cmd = "php ".$this->getParameter('kernel.project_dir')."\bin\UpdatePricesCore.php";
-        if($lock->acquire())
-        {
-            $lock->release();
-            if (substr(php_uname(), 0, 7) == "Windows"){
-                pclose(popen("start /B ". $cmd, "r"));
-            } else {
-                exec($cmd . " > /dev/null &");  
-            } 
-            return $this->render('test/index.html.twig', ['count' => "ok"]);
-        }
-        else
-        {
-            return $this->render('test/index.html.twig', ['count' => 'sadasdasasddasd']);
-        }
+        $api->setName($name)->updateData('$'.$price);
+
+        return $this->redirectToRoute('panel');
     }
-
-
-
 }

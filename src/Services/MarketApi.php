@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Psr\Log\LoggerInterface;
+use Doctrine\ORM\EntityRepository;
 
 class MarketApi extends SteamApi
 {
@@ -18,7 +19,7 @@ class MarketApi extends SteamApi
     protected $name;
     protected $condition;
 
-    public function __construct(LoggerInterface $log, EntityManagerInterface $manager,$count = 1,$souvenir = false,$stattrack = false,$name = '',$condition = 0)
+    public function __construct(EntityManagerInterface $manager,$count = 1,$souvenir = false,$stattrack = false,$name = '',$condition = 0)
     {
         $this->conditionArr = [
             0 => false,
@@ -36,7 +37,6 @@ class MarketApi extends SteamApi
             'type' => null,
             'message' => []
         ];
-        $this->log = $log;
         $this->count = $count;
         $this->manager = $manager;
         $this->item = new MarketItems;
@@ -160,6 +160,18 @@ class MarketApi extends SteamApi
         $history = $this->getSaleHistory(730,$options);
 
         return $history;
+    }
+
+    public function updateData($price = null,$name = null)
+    {
+        if($item = $this->repo->findOneBy(['name' => $this->name]))
+        {
+            if(!is_null($price)) $item->setPrice($price);
+            if(!is_null($name)) $item->setName($name);
+
+            $this->manager->persist($item);
+            $this->manager->flush();
+        }
     }
 
     /**
