@@ -86,7 +86,47 @@ class PanelController extends AbstractController
 
             return $this->redirectToRoute('panel', ['message' => $msg]);
         }
-        $msg = $api->setName($name)->getItemSaleHistory();
+        if($msg = $api->setName($name)->getItemSaleHistory())
+        {
+
+            $data = [];
+            $year = null;
+            $month = null;
+            $date = null;
+
+            foreach($msg as $item)
+            {
+                $saleDate = \explode("-",$item['sale_date']);
+
+                if($item['sale_date'] != $date)
+                {
+                    $date = $item['sale_date'];
+                    $saleYear = $saleDate[0];
+                    $saleMonth = $saleDate[1];
+                    $saleDay = $saleDate[2];
+
+                    if($year !== $saleYear)
+                    {
+                        $year = $saleYear;
+                        $data[$year] = [];
+                    }
+
+                    if($month !== $saleMonth)
+                    {
+                        $month = $saleMonth;
+                        $data[$year][$month] = [];
+                    }
+
+                    $item['sale_price'] = \number_format(\round($item['sale_price'],2),2);
+                    $data[$year][$month][] = $item;
+                }
+               
+            }
+            //jqplot (js chart) already downloaded, must introduce to main page
+            return $this->render('panel/details/details.html.twig',['error' => false, 'sale_history' => $data]);
+        }
+
+        return $this->redirectToRoute('panel');  
         
     }
 
