@@ -99,7 +99,7 @@ class PanelController extends AbstractController
         $msg['type'] = 'error';
         $msg['message'][] = 'Error getting data from steam servers due to number of requests. Please try again later.';
 
-        return $this->redirectToRoute('panel', ['message' => $msg]);  
+        return $this->redirectToRoute('panel');  
         
     }
 

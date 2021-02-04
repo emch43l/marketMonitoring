@@ -82,4 +82,11 @@ class MarketItems
     {
         return $this->itemNameId;
     }
+
+    public function setItemNameId($itemNameId)
+    {
+        $this->itemNameId = $itemNameId;
+
+        return $this;
+    }
 }

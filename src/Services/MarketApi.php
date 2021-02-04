@@ -53,16 +53,34 @@ class MarketApi extends SteamApi
 
     public function setItemId($id = null)
     {
+        $item = $this->getOneByName();
+        if(!empty($item->getItemNameId()))
+        {
+
+            $this->itemId = $item->getItemNameId();
+
+            return $this;
+        }
+
+        if($this->name == '')
+        {
+            return false;
+        }
+
         $options = [
             'market_hash_name' => $this->name
         ];
-        
+
         (is_null($id)) ? $this->itemId = $this->getItemNameId(730,$options) : $this->itemId = $id;
+
+        $item->setItemNameId($this->itemId);
+        $this->manager->persist($item);
+        $this->manager->flush();
 
         return $this;
     }
 
-    public function inspectItem()
+    public function getInspectItemData()
     {
 
     }
