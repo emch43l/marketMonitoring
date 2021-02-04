@@ -1,15 +1,62 @@
 {% extends 'panel/panel.html.twig' %}
 
 {% block title %}Item Details{% endblock %}
-
+{% block stylesheets %}
+<link rel="stylesheet" href="src/css/style.css"/>
+<link rel="stylesheet" type="text/css" href="src/jqchart/jquery.jqplot.min.css" />
+{% endblock %}
 {% block menu %}
-<div>aasdasdas</div>
+<a href="{{path('panel')}}">
+    <div class="details-menu-button">
+        Panel
+    </div>
+</a>
+
 {% endblock %}
 {% block mainSection %}
 
-{{dump(sale_history)}}
+<div class="item-details">
+    <div class="item-img-box">
+        <a href="javascript:void(0)" class="zoom-img" id="zoom-img" data-url="{{item.img}}" ><i class="fa fa-search-plus" aria-hidden="true"></i></a>
+        <img id="details-img" src="{{item.img}}" class="details-item-img" alt="{{item.name}}">
+    </div>
+    
+    <div class="item-details-box">
+        <h1>{{item.name}}</h1>
+        <div class="item-details-data">
+            <div id="price-status" class="price-status">
+                {% if item_data == false %}
 
+                {% else %}
 
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="item-chart">
+    <div class="item-price-history-box">
+        <div class="item-price-history" id="price-history">
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    var itemName = '{{ item.name }}';
+    var items = [
+        {% for item in sale_history %}
+            ['{{item.sale_date}}',{{item.sale_price}}],
+        {% endfor %}
+    ]
+</script>
+<script src="src/js/main/script.js"></script>
+<script language="javascript" type="text/javascript" src="src/jqchart/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="src/jqchart/plugins/jqplot.dateAxisRenderer.js"></script>
+<script type="text/javascript" src="src/jqchart/plugins/jqplot.cursor.js"></script>
 {% endblock %}
 
 

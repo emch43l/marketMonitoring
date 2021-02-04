@@ -7,7 +7,6 @@ use SteamApi\SteamApi;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Psr\Log\LoggerInterface;
 use Doctrine\ORM\EntityRepository;
 
 class MarketApi extends SteamApi
@@ -18,9 +17,13 @@ class MarketApi extends SteamApi
     protected $stattrack;
     protected $name;
     protected $condition;
+    protected $itemId;
+    public $prices;
 
-    public function __construct(EntityManagerInterface $manager,$count = 1,$souvenir = false,$stattrack = false,$name = '',$condition = 0)
+    public function __construct(EntityManagerInterface $manager,$count = 1,$souvenir = false,$stattrack = false,$name = '',$condition = 0,$prices = [],$itemId = null)
     {
+        $this->itemId = $itemId;
+        $this->prices = $prices;
         $this->conditionArr = [
             0 => false,
             1 => "(Factory-New)",
@@ -43,13 +46,30 @@ class MarketApi extends SteamApi
         $this->repo = $this->manager->getRepository(MarketItems::class);
     }
 
-    public function getData()
+    public function getOneByName()
     {
-        $response = $this->repo->findBy([],['name' => 'DESC']);
-        
-        // $response = $this->api->searchItems(730, $options);
+        return $this->repo->findOneBy(['name' => $this->name]);
+    }
 
-        return $response;
+    public function setItemId($id = null)
+    {
+        $options = [
+            'market_hash_name' => $this->name
+        ];
+        
+        (is_null($id)) ? $this->itemId = $this->getItemNameId(730,$options) : $this->itemId = $id;
+
+        return $this;
+    }
+
+    public function inspectItem()
+    {
+
+    }
+
+    public function getData()
+    {  
+        return $this->repo->findBy([],['name' => 'DESC']);
     }
 
     public function saveData()
@@ -71,8 +91,6 @@ class MarketApi extends SteamApi
             $this->msg['message'][] .= 'There is no item in the store with stattrack and souvernir combined together';
             return $this->msg;
         }
-
-        $this->log->alert($this->condition);
 
         if($this->condition) $this->name .= " ".$this->condition;
 
@@ -140,7 +158,6 @@ class MarketApi extends SteamApi
             $this->manager->flush();
             $this->msg['type'] = 'success';
             $this->msg['message'][] .= "Removed: ".$item->getName()." from list";
-            
         }
         else
         {
@@ -157,9 +174,9 @@ class MarketApi extends SteamApi
             'market_hash_name' => $this->name,
         ];
 
-        $history = $this->getSaleHistory(730,$options);
+        $this->prices = $this->getSaleHistory(730,['market_hash_name' => $this->name]);
 
-        return $history;
+        return $this;
     }
 
     public function updateData($price = null,$name = null)
@@ -171,7 +188,92 @@ class MarketApi extends SteamApi
 
             $this->manager->persist($item);
             $this->manager->flush();
+
+            return true;
         }
+
+        return false;
+
+    }
+
+    public function sortPricesByDate()
+    {
+        if(empty($this->prices)) return false;
+
+        $data = [];
+        $year = null;
+        $month = null;
+        $date = null;
+
+        foreach($this->prices as $item)
+        {
+            $saleDate = \explode("-",$item['sale_date']);
+
+            if($item['sale_date'] != $date)
+            {
+                $date = $item['sale_date'];
+                $saleYear = $saleDate[0];
+                $saleMonth = $saleDate[1];
+                $saleDay = $saleDate[2];
+
+                if($year !== $saleYear)
+                {
+                    $year = $saleYear;
+                    $data[$year] = [];
+                }
+
+                if($month !== $saleMonth)
+                {
+                    $month = $saleMonth;
+                    $data[$year][$month] = [];
+                }
+
+                $item['sale_price'] = \number_format(\round($item['sale_price'],2),2);
+                $data[$year][$month][] = $item;
+            }
+           
+        }
+
+        $this->prices = $data;
+
+        return $this->prices;
+
+    }
+
+    public function skipMultipleRecordsInDay()
+    {
+        if(empty($this->prices)) return false;
+
+        $data = [];
+        $date = null;
+        $avg = 0;
+        $count = 0;
+        $prevDate = null;
+
+        foreach($this->prices as $item)
+        {   
+            if($item['sale_date'] != $date)
+            {
+                if($count)
+                {
+                    $item['sale_price'] = $avg/$count;
+                }
+                $item['sale_price'] = \number_format(\round($item['sale_price'],2),2);
+                $data[] = $item;
+                $date = $item['sale_date'];
+                $avg = 0;
+                $count = 0;
+               
+            }
+            else
+            {
+                $count ++;
+                $prevDate = $item['sale_date'];
+                $avg += $item['sale_price'];
+            }
+        }
+
+        return $this->prices = $data;
     }
 
     /**
@@ -243,5 +345,13 @@ class MarketApi extends SteamApi
         $this->condition = $this->conditionArr[$condition];
 
         return $this;
+    }
+
+    /**
+     * Get the value of prices
+     */ 
+    public function getPrices()
+    {
+        return $this->prices;
     }
 }

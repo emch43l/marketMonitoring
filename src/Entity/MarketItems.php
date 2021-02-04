@@ -32,6 +32,11 @@ class MarketItems
      */
     private $img;
 
+    /**
+     * @ORM\Column(type="integer", length=50, nullable=true)
+     */
+    private $itemNameId;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -71,5 +76,10 @@ class MarketItems
         $this->img = $img;
 
         return $this;
+    }
+
+    public function getItemNameId()
+    {
+        return $this->itemNameId;
     }
 }

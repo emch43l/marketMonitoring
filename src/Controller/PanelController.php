@@ -78,55 +78,28 @@ class PanelController extends AbstractController
     public function getDetails(MarketApi $api, Request $request)
     {
 
+        $item_data = false;
+        $msg = ['type' => '', 'message' => []];
+
         if(!$name = $request->query->get('name'))
         {
-            $msg = ['type' => '', 'message' => []];
             $msg['type'] = 'error';
-            $msg['message'][] .= 'Please specify item name';
+            $msg['message'][] = 'Please specify item name';
 
             return $this->redirectToRoute('panel', ['message' => $msg]);
         }
-        if($msg = $api->setName($name)->getItemSaleHistory())
+        if($data = $api->setName($name)->getItemSaleHistory()->skipMultipleRecordsInDay())
         {
-
-            $data = [];
-            $year = null;
-            $month = null;
-            $date = null;
-
-            foreach($msg as $item)
-            {
-                $saleDate = \explode("-",$item['sale_date']);
-
-                if($item['sale_date'] != $date)
-                {
-                    $date = $item['sale_date'];
-                    $saleYear = $saleDate[0];
-                    $saleMonth = $saleDate[1];
-                    $saleDay = $saleDate[2];
-
-                    if($year !== $saleYear)
-                    {
-                        $year = $saleYear;
-                        $data[$year] = [];
-                    }
-
-                    if($month !== $saleMonth)
-                    {
-                        $month = $saleMonth;
-                        $data[$year][$month] = [];
-                    }
-
-                    $item['sale_price'] = \number_format(\round($item['sale_price'],2),2);
-                    $data[$year][$month][] = $item;
-                }
-               
-            }
-            //jqplot (js chart) already downloaded, must introduce to main page
-            return $this->render('panel/details/details.html.twig',['error' => false, 'sale_history' => $data]);
+            $item = $api->getOneByName();
+            $item_id = $api->setItemId();
+            
+            return $this->render('panel/details/details.html.twig',['error' => false, 'sale_history' => $data, 'item' => $item, 'item_data' => $item_id]);
         }
 
-        return $this->redirectToRoute('panel');  
+        $msg['type'] = 'error';
+        $msg['message'][] = 'Error getting data from steam servers due to number of requests. Please try again later.';
+
+        return $this->redirectToRoute('panel', ['message' => $msg]);  
         
     }
 
